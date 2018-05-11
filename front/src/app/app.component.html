@@ -1,0 +1,58 @@
+<div *ngIf="firstStep">
+  <div>
+    <h2>Create a new Workshop</h2>
+  </div>
+  <div>
+    <label>Name:
+      <input type="text" [(ngModel)]="order.workshopName">
+    </label>
+  </div>
+
+  <h2>Type</h2>
+  <div *ngFor="let workshop of predefinedWorkshops">
+    <label>
+      <input type="radio" name="workshopType" [value]="workshop.type" (change)="selectType(workshop.type)">
+      {{workshop.type}}
+    </label>
+  </div>
+
+  <h2>Details</h2>
+  <div>
+    <label>Number of participants:
+      <input type="number" [(ngModel)]="order.numberOfParticipants" required>
+    </label>
+  </div>
+  <div>
+    <label>Date:
+      <input type="date" [(ngModel)]="order.date" required>
+    </label>
+  </div>
+
+  <div style="margin-top: 30px;">
+    <button type="submit" (click)="goToSummary()">Next step</button>
+  </div>
+</div>
+
+<div *ngIf="secondStep">
+  <h2>Summary</h2>
+  <table>
+    <tr *ngFor="let item of items">
+      <td><input type="checkbox" [checked]="item.checked" (change)="item.checked = !item.checked"></td>
+      <td>{{item.name}}</td>
+      <td><input type="number" [(ngModel)]="item.quantity" (change)="changeQuantity(item)"></td>
+    </tr>
+  </table>
+  <div>
+    <textarea placeholder="Additional Items" style="width: 300px; margin-top: 20px;"
+              [(ngModel)]="order.additionalItems"></textarea>
+  </div>
+  <div style="margin-top: 30px;">
+    <button type="submit" (click)="submitOrder()">Submit order</button>
+  </div>
+</div>
+
+<div *ngIf="lastStep">
+  <h2>Thank you!</h2>
+  <p>Your box will be sent to you before {{order.date | date}}!</p>
+</div>
+
