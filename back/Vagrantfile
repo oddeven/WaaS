@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<SCRIPT
+echo I am provisioning...
+date > /etc/vagrant_provisioned_at
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: $script
+end
+
+Vagrant::Config.run do |config|
+  #config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "bento/ubuntu-14.04"
+  #config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64"
+  
+  config.vm.host_name = "waasapi"
+
+  config.vm.provision :shell, :path => "provision.sh"
+
+  #config.vm.forward_port 5432, 15432
+  config.vm.forward_port 8080, 8080
+  config.vm.network "hostonly", "192.168.1.8"
+end
